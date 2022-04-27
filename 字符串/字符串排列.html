@@ -1,0 +1,50 @@
+<script>
+  /**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
+ var checkInclusion = function(s1, s2) {
+  let left = 0, right = 0
+  let window = new Map()
+  let valid = 0
+  let map = new Map()
+  for (let s of s1) {
+    map.set(s, (map.get(s) ?? 0) + 1)
+  }
+  let res = []
+  while(right < s2.length) {
+    // debugger
+    let s = s2[right]
+    right++
+    if (map.get(s)) {
+      window[s] = (window[s] ?? 0) + 1
+      window.set(s, (window.get(s) ?? 0) + 1)
+      if (window.get(s) === map.get(s)) valid++
+    }
+    
+    while (valid === map.size) { // 窗口中已包含s1的所有字符，但不一定是连续字符串
+      // debugger
+      let strLeft = s2[left]
+      if (map.get(strLeft)) {
+          if (right - left === s1.length) {
+            res.push(left)
+        }
+        if (window.get(strLeft) === map.get(strLeft)) valid-- 
+        window.set(strLeft, window.get(strLeft) - 1) // left往右的同时，窗口中的最左元素也应该去掉
+      }
+      left++
+    }
+  }
+  return res
+};
+
+let s = "abab", p = "ab"
+let res = checkInclusion(p ,s)
+console.log(res);
+</script>

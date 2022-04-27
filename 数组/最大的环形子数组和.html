@@ -1,0 +1,21 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubarraySumCircular = function(nums) {
+  let max = min= nums[0], // 总最大值
+  curMax = curMin = 0, // 目前最大值
+  total = 0; // 数组总和
+
+  for (let val of nums) {
+    curMax = Math.max(val, curMax + val)
+    max = Math.max(max, curMax) // 更新最大值
+    curMin = Math.min(val, curMin + val)
+    min = Math.min(min, curMin)
+    total += val
+  }
+
+  return max > 0 ? Math(max , total - min) : max
+};
+</script>

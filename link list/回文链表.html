@@ -1,0 +1,40 @@
+<script src="../common.js"></script>
+
+<script>
+  /**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function(head) {
+  let fast = head, slow = head
+  while(fast?.next) {
+    fast = fast.next.next
+    slow = slow.next
+  }
+  debugger
+  let cur = slow, next = cur.next
+  while(next) {
+    cur.next = cur.next.next
+    next.next = cur
+    // cur = next
+    // next = cur.next
+  }
+  debugger
+  fast = head
+  // 比较前后链表
+  while(fast !== slow) {
+    if (fast.val !== cur.val) return false
+  }
+  return true
+};
+const head = createList([1,2,2,1])
+const res = isPalindrome(head)
+console.log(res);
+</script>

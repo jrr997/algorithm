@@ -1,0 +1,157 @@
+<script>
+  class MyPromise {
+    constructor(fn) {
+      this.init();
+      this.initBind();
+      try {
+        fn(this.resolve, this.reject);
+      } catch (e) {
+        this.reject(e);
+      }
+    }
+
+    init() {
+      this.PromiseResult = null;
+      this.PromiseState = "pending";
+
+      this.fulfilledQueue = [];
+      this.rejectQueue = [];
+    }
+
+    initBind() {
+      this.resolve = this.resolve.bind(this);
+      this.reject = this.reject.bind(this);
+    }
+
+    resolve(res) {
+      if (this.PromiseState !== "pending") return;
+
+      this.PromiseResult = res;
+      this.PromiseState = "fulfilled";
+      while (this.fulfilledQueue.length > 0) {
+        const onFulfilled = this.fulfilledQueue.shift();
+        onFulfilled(res);
+      }
+    }
+
+    reject(reason) {
+      if (this.PromiseState !== "pending") return;
+
+      this.PromiseResult = reason;
+      this.PromiseState = "rejected";
+
+      if (this.rejectQueue.length > 0) {
+      }
+      while (this.rejectQueue.length > 0) {
+        const onRejected = this.rejectQueue.shift();
+        onRejected(reason);
+      }
+    }
+
+    then(onFulfilled, onRejected) {
+      // 确保参数一定是函数
+      onFulfilled = typeof onFulfilled === "function" ? onFulfilled : (v) => v;
+      onRejected = typeof onRejected === "function" ? onRejected : (reason) => { throw reason; };
+
+      var thenPromise = new MyPromise((resolve, reject) => {
+        const resolvePromise = (cb) => {
+          setTimeout(() => {
+            try {
+              const x = cb(this.PromiseResult);
+              if (x === thenPromise && x instanceof MyPromise) {
+                // 不能返回自身,什么情况能返回自身？
+                throw new Error("不能返回自身");
+              } else if (x instanceof MyPromise) {
+                x.then(resolve, reject);
+              } else {
+                // 直接resolve普通值
+                resolve(x);
+              }
+            } catch (e) {
+              reject(e);
+            }
+          });
+        };
+
+        if (this.PromiseState === "fulfilled") {
+          resolvePromise(onFulfilled);
+        } else if (this.PromiseState === "rejected") {
+          resolvePromise(onRejected);
+        } else {
+          this.fulfilledQueue.push(resolvePromise.bind(this, onFulfilled));
+          this.rejectQueue.push(resolvePromise.bind(this, onRejected));
+        }
+      });
+      return thenPromise;
+    }
+
+    catch(onRejected) {
+      return this.then(null, onRejected)
+    }
+
+    static resolve(val) {
+      if (val instanceof MyPromise) return val
+
+      return new MyPromise(resolve => {
+        resolve(val)
+      })
+    }
+
+    static reject(reason) {
+      return new MyPromise((resolve, reject) => {
+        reject(reason)
+      })
+    }
+
+    // 接收一个Promise数组，数组中如有非Promise项，则此项当做成功
+    // 如果所有Promise都成功，则返回成功结果数组
+    // 如果有一个Promise失败，则返回这个失败结果
+    static all(array) {
+      let count = 0
+      let results = []
+      return new MyPromise((resolve, reject) => {
+        array.forEach((promise, index) => {
+        MyPromise.resolve(promise)
+        .then(res => {
+          count++
+          results[index] = res
+          if (count === array.length) resolve(results)
+        })
+        .catch(e => reject(e))
+      });
+      })
+
+    }
+  }
+
+  // const p1 = new MyPromise((resolve) => {
+  //   setTimeout(() => resolve(1), 1000)
+  // });
+
+  // p1.then((res) => {
+  //   console.log("res: ", res);
+  //   res1.aaa.bbb.ccc = 1; // reject(referenceError)
+  //   return 999;
+  // })
+  //   .then((res) => {
+  //     console.log(res);
+  //   })
+  //   .catch((e) => {
+  //     console.log(123123312);
+  //     console.log(e);
+  //   });
+  // console.log("hhh");
+
+
+  // resolve测试
+  // const p2 = MyPromise.resolve(1).then(res => {
+  //   console.log('resolve: ', res);
+  // })
+
+  // MyPromise.reject测试
+  const p3 = MyPromise.reject('reason')
+  .catch(reason => {
+    console.log('reason2');
+  })
+
+</script>

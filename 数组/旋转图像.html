@@ -1,0 +1,28 @@
+<script>
+  /**
+   * @param {number[][]} matrix
+   * @return {void} Do not return anything, modify matrix in-place instead.
+   */
+  var rotate = function (matrix) {
+    let temp;
+    let times = Math.ceil(matrix.length / 2);
+    let end = matrix.length - 1;
+    for (let i = 0; i < times; i++) {
+      // debugger
+      if (i === end) return;
+      for (let j = i; j < end; j++) {
+        // 4个元素互换
+        temp = matrix[j][end];
+        matrix[j][end] = matrix[i][j];
+        matrix[i][j] = matrix[end - j + i][i];
+        matrix[end - j + i][i] = matrix[end][end - j + i];
+        matrix[end][end - j + i] = temp;
+      }
+      end--;
+    }
+  };
+
+  let matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+  let res = rotate(matrix);
+  console.log(matrix);
+</script>

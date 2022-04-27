@@ -1,0 +1,73 @@
+<script src="../common.js"></script>
+
+<script>
+  /**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+ var reverseKGroup = function(head, k) {
+  let start = 1, end = k
+  
+
+  let dummy = new ListNode(-1)
+  dummy.next = head
+  let startNode = dummy
+  // debugger
+  while(true) {
+    // 判断是否需要反转
+    let p = k
+    while(p > 0) {
+      p--
+      startNode = startNode?.next
+      if (!startNode) return head
+    }
+    head = reverseBetween(head, start, end)
+    // debugger
+    start += k
+    end +=k
+
+    p = k
+    while(p > 0) {
+      p--
+      startNode = startNode?.next
+    }
+  }
+};
+
+var reverseBetween = function(head, left, right) {
+  const dummy = new ListNode(-1)
+  dummy.next = head
+  let p1 = dummy, p2 = head
+
+  // p2 移动到区间第一个节点
+  let i = left
+  while(i > 1) {
+    p2 = p2.next
+    p1 = p1.next
+    i--
+  }
+  // 开始反转
+  // debugger
+  for ( i = 0; i < right - left; i ++) {
+    const node = p2.next
+    p2.next = node.next
+    node.next = p1.next
+    p1.next = node
+  }
+  return dummy.next
+};
+
+
+const head = createList([1,2,3,4,5])
+// debugger
+const res = reverseKGroup(head, 3)
+console.log(res);
+</script>

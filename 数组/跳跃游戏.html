@@ -1,0 +1,20 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var canJump = function(nums) {
+    let len = nums.length
+    if (len === 1) return true
+    let max = nums[0]
+    // debugger
+    for (let i = 0; i < len; i++) {
+      if (i > max) return false
+      if (nums[i] + i > max) max = nums[i] + i  
+      if (max >= len - i) return true
+    }
+    return false
+};
+
+console.log(canJump([2,0,0]));
+</script>

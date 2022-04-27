@@ -1,0 +1,30 @@
+<script>
+/**
+ * @param {number[][]} matrix
+ * @param {number} target
+ * @return {boolean}
+ */
+/**
+ * @param {number[][]} matrix
+ * @param {number} target
+ * @return {boolean}
+ */
+ var findNumberIn2DArray = function(matrix, target) {
+  //  debugger
+    if (matrix.length === 0) return false
+    let [i, j] = [matrix.length - 1, 0]
+    while (matrix[i] && matrix[i][j] &&  matrix[i][j] !== target && i >= 0 && j <= matrix[0].length - 1) {
+        if (matrix[i][j] > target) {
+            i --
+        } else {
+            j++
+        }
+    }
+    try {
+        return matrix[i][j] === target
+    } catch {
+        return false
+    }
+};
+console.log(findNumberIn2DArray([[1,3,5]], 5));
+</script>

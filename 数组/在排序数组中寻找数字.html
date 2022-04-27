@@ -1,0 +1,75 @@
+<!-- <script>
+  /**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var search = function(nums, target) {
+    const index = nums.findIndex(num => num === target)
+    if (index === -1) {
+        return 0
+    } else {
+        let total = 1
+        while(nums[index + 1] === target) {
+            total++
+            index++
+        }
+        return total
+    }
+};
+const arr = [5,7,7,8,8,10]
+console.log(search(arr, 5));
+
+</script> -->
+
+<script>
+  /**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+  var search = function (nums, target) {
+    // 二分法寻找元素
+    // debugger
+    let cur = Math.floor(nums.length / 2)
+    let left = 0
+    let right = nums.length
+    while (nums[cur] !== target && right > left && cur !== left && cur !== right) {
+      if (nums[cur] > target) {
+        right = cur
+        cur = Math.floor(((right + left) / 2)) 
+      } else {
+        left = cur
+        cur = Math.floor((right + left) / 2)
+      }
+    }
+    if (nums[cur] === target) {
+      let res = 1
+      // 向前找
+      if (cur !== 0) {
+        let low = cur - 1
+        while (nums[low] === target) {
+          if (low < 0) return
+          res++
+          low--
+        }
+      }
+
+      if (cur !== nums.length) {
+        let high = cur + 1
+        while (nums[high] === target) {
+          if (high > nums.length) return
+          res++
+          high++
+        }
+      }
+
+      return res
+    } else {
+      return 0
+    }
+  };
+
+  const arr = [0,0,1,1,1,4,5,5]
+  console.log(search(arr, 2));
+</script>

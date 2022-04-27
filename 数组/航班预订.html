@@ -1,0 +1,26 @@
+<script>
+  /**
+ * @param {number[][]} bookings
+ * @param {number} n
+ * @return {number[]}
+ */
+var corpFlightBookings = function(bookings, n) {
+  let arr = new Array(n + 1).fill(0)
+  debugger
+  bookings.forEach((booking, i) => {
+    arr[booking[0]] += booking[2]
+    arr[booking[1] + 1] -= booking[2] 
+  })
+  let answer = []
+  let temp = 0
+  for(let i = 0; i < arr.length - 1; i++) {
+    answer[i] = arr[i + 1] + temp
+    temp = answer[i]
+  }
+  return answer
+};
+
+let bookings = [[1,2,10],[2,3,20],[2,5,25]]
+let res = corpFlightBookings(bookings, 5)
+console.log(res);
+</script>

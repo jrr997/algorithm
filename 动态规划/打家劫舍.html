@@ -1,0 +1,23 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  var rob = function (nums) {
+    const len = nums.length;
+    if (len < 3) return Math.max(...nums);
+    // debugger
+    let res = [];
+    res[0] = nums[0];
+    res[1] = Math.max(nums[1], nums[0]);
+    for (let i = 2; i < nums.length; i++) {
+      res[2] = Math.max(res[1], res[0] + nums[i]);
+      res[0] = res[1]
+      res[1] = res[2]
+    }
+    return res[2];
+  };
+
+  let arr = [1, 1, 1, 2,5];
+  console.log(rob(arr));
+</script>

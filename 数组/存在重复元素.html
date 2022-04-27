@@ -1,0 +1,23 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @return {boolean}
+   */
+
+  //  解题思路1: 利用Set进行数组去重，如果去重后的数组长度变小了，说明由重复元素
+  var containsDuplicate = function (nums) {
+    return [...new Set(nums)].length !== nums.length
+  };
+
+  // 思路2：建立hash表，遍历数组依次判断每个元素是否已经在hash表中，时间复杂度为n
+  var containsDuplicate = function (nums) {
+    var set = new Set()
+    for (let num of nums) {
+      if (set.has(num)) {
+        return true
+      }
+      set.add(num)
+    }
+    return false
+  };
+</script>

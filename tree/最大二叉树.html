@@ -1,0 +1,33 @@
+<script>
+
+// Definition for a binary tree node.
+function TreeNode(val, left, right) {
+    this.val = (val===undefined ? 0 : val)
+    this.left = (left===undefined ? null : left)
+    this.right = (right===undefined ? null : right)
+}
+/**
+ * @param {number[]} nums
+ * @return {TreeNode}
+ */
+var constructMaximumBinaryTree = function(nums) {
+    function solution(p1, p2) {
+        if (p1 > p2) return null
+        // 找到最大元素的索引
+        let maxIndex = p1
+
+        for (let i = p1; i <= p2; i++) {
+            if (nums[i] > nums[maxIndex]) maxIndex = i
+        }
+
+        let left = solution(p1, maxIndex - 1)
+        let right = solution(maxIndex + 1, p2)
+        return new TreeNode(nums[maxIndex], left, right)
+    }
+    return solution(0, nums.length - 1)
+};
+const arr = [3,2,1,6,0,5]
+// debugger
+const res = constructMaximumBinaryTree(arr)
+console.log(res);
+</script>

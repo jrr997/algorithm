@@ -1,0 +1,38 @@
+<script>
+
+ function TreeNode(val, left, right) {
+     this.val = (val===undefined ? 0 : val)
+     this.left = (left===undefined ? null : left)
+     this.right = (right===undefined ? null : right)
+ }
+
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode[]}
+ */
+var findDuplicateSubtrees = function(root) {
+  function traverse(node) {
+    if (!node) return
+    
+    const left = traverse(node.left)
+    const right = traverse(node.right)
+
+    const subTree = JSON.stringify(left) + ',' + node.val + JSON.stringify(right)
+    const times = Map.get(subTree)
+    if (times) {
+      if (times === 1) {
+        res.push(node)
+      } else {
+        Map.set(subTree, times + 1)
+      }
+    } else {
+      Map.set(subTree, 1)
+    }
+  }
+  
+  const map = new Map()
+  const res = []
+  traverse(root)
+  return res
+};
+</script>

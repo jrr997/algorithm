@@ -1,0 +1,27 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxProduct = function(nums) {
+  const len = nums.length 
+  if (len === 1) return nums[0]
+  let max = min = 1
+  if (nums[0] > 0) {
+    max = nums[0]
+  } else {
+    min = nums[0]
+  }
+  for (let i = 1; i < len; i++) {
+    if (nums[i] > 0)  {
+      max = Math.max(max, max * nums[i])
+    } else {
+      max = Math.max(min, min * nums[i])
+      min = Math.min(max, max * nums[i])
+    }
+  }
+  console.log(max,min);
+  return max
+};
+console.log(maxProduct([2,3,-2,4]));
+</script>

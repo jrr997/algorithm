@@ -1,0 +1,38 @@
+<script>
+  var longestPalindrome = function(s) {
+  var solution = function(left, right) {
+    let res = ''
+    while(left >= 0) {
+      if(s[left] === s[right]) {
+        if (left === right) {
+          res += s[left]
+        } else {
+          res = s[left] + res + s[right]
+        }
+        left--
+        right++
+      } else {
+        return res
+      }
+    }
+    return res
+  }
+  let len = s.length
+  let res = ''
+  for(let i in s) {
+    i = Number(i)
+    // debugger
+    // 1.寻找以s[i]为中心的回文字符串
+    let str1 = solution(i, i)
+    // 2.寻找以s[i]、s[i + 1]为中心的回文字符串
+    let str2 = i + 1 < len ? solution(i, i + 1) : ''
+    if (str1.length > res.length) res = str1
+    if (str2.length > res.length) res = str2
+  }
+  return res
+};
+
+var s = "cbbd"
+var res = longestPalindrome(s)
+console.log(res);
+</script>

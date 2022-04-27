@@ -1,0 +1,32 @@
+<script>
+  var kthSmallest = function(root, k) {
+    let count = 1
+    function traverse(node) {
+      // console.log(res);
+        if (!node || res !== null) return
+
+        traverse(node.left)
+        if (count === k && res === null) return res = node.val
+        count ++
+        traverse(node.right)
+    }
+    var res = null
+    // debugger
+    traverse(root)
+    return res
+};
+
+function TreeNode(val, left, right) {
+     this.val = (val===undefined ? 0 : val)
+     this.left = (left===undefined ? null : left)
+     this.right = (right===undefined ? null : right)
+ }
+
+ let root = new TreeNode(3)
+ root.left = new TreeNode(1)
+ root.right = new TreeNode(4)
+ root.left.right= new TreeNode(2)
+
+ const res = kthSmallest(root, 1)
+ console.log(res);
+</script>

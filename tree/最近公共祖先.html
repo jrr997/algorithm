@@ -1,0 +1,21 @@
+<script src="./common.js"></script>
+<script>
+var lowestCommonAncestor = function(root, p, q) {
+    function find(node, p, q) {
+        if (!node) return
+
+        if (node.val === p || node.val === q) return node
+
+        let left = find(node.left, p, q)
+        let right = find(node.right, p, q)
+
+        if (left && right) return node
+        return left || right
+    }
+    return find(root, p.val, q.val)
+};
+
+let root = createTree([3,5,1,6,2,0,8,null,null,7,4])
+let res = lowestCommonAncestor(root, new TreeNode(5), new TreeNode(1))
+console.log(res);
+</script>

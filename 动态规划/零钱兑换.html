@@ -1,0 +1,61 @@
+<script>
+  /**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+
+// 没有优化的递归代码
+// var coinChange = function(coins, amount) {
+//   return dp(amount)
+
+//   function dp(n) {
+//     if (coins.includes(n)) return 1
+//     if (n === 0) return 0
+
+//     let min = Number.MAX_SAFE_INTEGER
+//     for (let coin of coins) {
+//       if(n >= coin) {
+//         let res = dp(n - coin)
+//         if (res === -1) return res
+//         min = Math.min(res + 1, min)
+//       }
+//     }
+//     return min === Number.MAX_SAFE_INTEGER ? -1 : min
+//   }
+// };
+
+
+// 递归 + 备忘录
+var coinChange = function(coins, amount) {
+  let map = new Map()
+  return dp(amount)
+
+  function dp(n) {
+    if (coins.includes(n)) return 1
+    if (n === 0) return 0
+
+    let min = Number.MAX_SAFE_INTEGER
+    for (let coin of coins) {
+      if(n >= coin) {
+        let cache = map.get(n - coin)
+        let res
+        if (cache || cache === 0) {
+          res = cache
+        } else {
+          res = dp(n - coin) 
+        }
+        if (res === -1) return res
+        min = Math.min(res + 1, min)
+        
+      }
+    }
+    map.set(n, min)
+    return min === Number.MAX_SAFE_INTEGER ? -1 : min
+  }
+};
+
+let coins = [186,419,83,408], amount = 6249
+let res = coinChange(coins, amount)
+console.log(res);
+</script>

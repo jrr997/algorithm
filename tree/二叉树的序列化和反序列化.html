@@ -1,0 +1,54 @@
+<script>
+   function TreeNode(val) {
+      this.val = val;
+      this.left = this.right = null;
+   }
+
+  /**
+   * Encodes a tree to a single string.
+   *
+   * @param {TreeNode} root
+   * @return {string}
+   */
+  var serialize = function (root) {
+    function traverse(node) {
+      if (!node) return { val: "#" };
+      arr.push(node.val);
+      traverse(node.left);
+      traverse(node.right);
+    }
+    const arr = [];
+    traverse(root);
+    return new String(arr);
+  };
+
+  /**
+   * Decodes your encoded data to tree.
+   *
+   * @param {string} data
+   * @return {TreeNode}
+   */
+  var deserialize = function (data) {
+    const arr = data.split(',')
+    let p = 0
+    function solution() {
+      p++
+      if (arr[p-1] === "#") {
+        return null;
+      }
+
+      let root = new TreeNode(arr[p-1]);
+      root.left = solution();
+      root.right = solution();
+      return root;
+    }
+    // debugger
+    return solution();
+  };
+  console.log(deserialize());
+
+  /**
+   * Your functions will be called as such:
+   * deserialize(serialize(root));
+   */
+</script>
