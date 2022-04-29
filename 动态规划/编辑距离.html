@@ -1,0 +1,64 @@
+<script>
+  /**
+   * @param {string} word1
+   * @param {string} word2
+   * @return {number}
+   */
+
+  // 递归 + 备忘录
+  // var minDistance = function(word1, word2) {
+  //   let map = new Map()
+  //   function solution(i ,j) {
+  //     if (i === -1) return j + 1
+  //     if (j === -1) return i + 1
+  //     if (map.has(i + '-' + j)) return map.get(i + '-' + j)
+  //     if (word1[i] === word2[j]) return solution(i - 1, j - 1)
+
+  //     let min = Math.min(
+  //       solution(i - 1, j - 1),
+  //       solution(i - 1, j),
+  //       solution(i, j - 1)
+  //     ) + 1
+
+  //     map.set(i + '-' + j, min)
+  //     return min
+  //   }
+
+  //   return solution(word1.length - 1, word2.length - 1)
+  // };
+
+  // 迭代
+  var minDistance = function(word1, word2) {
+    // base case: dp[i][0] = i dp[0][j] = j
+    let dp = new Array(word1.length + 1).fill(0)
+    dp[0] = []
+    for (let i = 0; i <= word2.length; i++) {
+      dp[0][i] = i
+    }
+    for (let i = 1; i <= word1.length; i++) {
+      dp[i] = new Array(word2.length + 1)
+      dp[i][0] = i
+    }
+
+    for (let i = 1; i <= word1.length; i++) {
+      for (let j = 1; j <= word2.length; j ++) {
+        if (word1[i - 1] === word2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1]
+        } else {
+        dp[i][j] = Math.min(
+          dp[i - 1][j - 1],
+          dp[i][j - 1],
+          dp[i - 1][j],
+        ) + 1
+        }
+      }
+    }
+
+    return dp[word1.length][word2.length]
+  }
+
+  let word1 = "horse",
+    word2 = "ros";
+  let res = minDistance(word1, word2);
+  console.log(res);
+</script>

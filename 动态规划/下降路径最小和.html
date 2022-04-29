@@ -1,0 +1,33 @@
+<script>
+  /**
+ * @param {number[][]} matrix
+ * @return {number}
+ */
+
+dp迭代
+var minFallingPathSum = function(matrix) {
+  let res = new Array(matrix.length)
+  let i = 0
+  while (i < matrix.length) {
+    res[i] = []
+    i++
+  }
+  // base case: fn(matrix.length - 1, col) = matrix[matrix.length - 1, col]
+  res[matrix.length - 1] = [...matrix[matrix.length - 1]]
+  
+  for (let i = matrix.length - 2; i >= 0; i--) {
+    for(let j = 0; j <matrix.length; j++) {
+      res[i][j] = Math.min(
+        res[i + 1][j], 
+        res[i + 1][j + 1] ?? Number.MAX_SAFE_INTEGER,
+        res[i + 1][j - 1] ?? Number.MAX_SAFE_INTEGER
+      ) + matrix[i][j]
+    }
+  }
+  return Math.min(...res[0])
+}
+
+let matrix = [[-19,57],[-40,-5]]
+let res = minFallingPathSum(matrix)
+console.log(res);
+</script>
