@@ -1,0 +1,37 @@
+<script>
+  /**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {number}
+ */
+var minimumDeleteSum = function(s1, s2) {
+  let dp = new Array(s1.length + 1).fill(0).map(() =>new Array(s2.length + 1).fill(0))
+  // base case: dp[0][0] = 0, dp[i][0] = s1.chatCodeAt(i - 1) + preSum
+  // dp[0][j] = sw.chatCodeAt(j - 1) + preSum
+
+  dp[0].forEach((el, index) => {
+    if (index === 0) return
+    dp[0][index] = s2.charCodeAt(index - 1) + dp[0][index - 1]
+  })
+  dp.forEach((el, index) => {
+    index !== 0 && (dp[index][0] = s1.charCodeAt(index - 1) + dp[index - 1][0])
+  })
+  for (let i = 1; i <= s1.length; i++) {
+    for (let j = 1; j <= s2.length; j++) {
+      if (s1[i - 1] === s2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1]
+      } else {
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + s1[i - 1].charCodeAt(),
+          dp[i][j - 1] + s2[j - 1].charCodeAt()
+        )
+      }
+    }
+  }
+  return dp[s1.length][s2.length]
+};
+  
+let res = minimumDeleteSum(s1, s2)
+console.log(res);
+
+</script>
