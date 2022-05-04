@@ -1,0 +1,84 @@
+<script>
+  /**
+   * @param {number[]} nums
+   * @param {number} k
+   * @return {boolean}
+   */
+
+  // 以num的视角回溯：
+  // 如果(nums总和 / k)不是整数，肯定不能划分
+  // var canPartitionKSubsets = function(nums, k) {
+  //   const sum = nums.reduce((pre, cur) => pre + cur, 0)
+  //   if (sum % k !== 0) return false
+  //   const buckets = new Array(k).fill(0)
+  //   let _nums = [...nums].sort((a, b) => b - a) // 降序可以更容易命中剪枝条件
+  //   return backTrack(0, _nums, buckets, sum / k)
+  // };
+
+  // // 遍历每个num，每个桶都选择放和不放
+  // var backTrack = function(index, nums, buckets, target) {
+  //   // 递归结束条件: 索引超出nums长度，此时所有num已被遍历
+  //   if (index === nums.length) {
+  //     for (let bucket of buckets) {
+  //       if (bucket !== target) return false
+  //     }
+  //     return true
+  //   }
+
+  //   for (let i in buckets) {
+  //     // 剪枝: 如果超了就不放
+  //     if (buckets[i] + nums[index] > target) {
+  //       continue
+  //     }
+
+  //     buckets[i] += new Number(nums[index]) // 放
+  //     let canPartition = backTrack(index + 1, nums, buckets, target) // 决定下个一num是否要放
+  //     if (canPartition) return true
+  //     buckets[i] -= nums[index] // 恢复
+  //     // 剪枝 why?
+  //     if (buckets[i] === 0) break
+  //   }
+
+  //   return false
+  // }
+
+  // 以桶的视觉回溯：
+  // 遍历每个桶，对每个数字都选择放与不放
+  var canPartitionKSubsets = function (nums, k) {
+    const sum = nums.reduce((pre, cur) => pre + cur, 0);
+    if (sum % k !== 0) return false;
+    let _nums = [...nums].map(item => item - 0);
+    const buckets = new Array(k).fill(0);
+    let used = new Set(); // 记录在桶里的数字的索引
+    return backTrack(0, 0, buckets, _nums, sum / k, used);
+  };
+
+  var backTrack = function (index, start, buckets, nums, target, used) {
+    // 结束条件: 遍历完所有桶
+    if (index === buckets.length) return true;
+
+    if (buckets[index] === target)
+      return backTrack(index + 1, 0, buckets, nums, target, used);
+    // 遍历每个数字
+    for (let i = start; i < nums.length; i++) {
+      if (used.has(i)) continue; // 检查数字是否已在桶里
+
+      // 桶没有空间时跳过这个数字
+      if (buckets[index] + nums[i] > target) continue;
+
+      // 放
+      used.add(i);
+      buckets[index] += nums[i];
+      if (backTrack(index, i + 1, buckets, nums, target, used)) return true;
+      used.delete(i);
+      buckets[index] -= nums[i];
+    }
+
+    return false;
+  };
+
+  let nums = [2, 2, 2, 2, 3, 4, 5],
+    k = 4;
+  let res = canPartitionKSubsets(nums, k);
+  console.log(res);
+</script>
