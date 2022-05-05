@@ -1,0 +1,25 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsets = function(nums) {
+  function backTrack(start) {
+    res.push([...track])
+    for (let i = start; i < nums.length; i++) {
+      track.push(nums[i])
+      backTrack(i + 1)
+      track.pop()
+    }
+  }
+
+  const track = []
+  const res = []
+  backTrack(0)
+  return res
+};
+let nums = [1,2,2]
+let res = subsets(nums)
+console.log(res);
+
+</script>

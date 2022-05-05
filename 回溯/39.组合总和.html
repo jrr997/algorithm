@@ -1,0 +1,25 @@
+<script>
+  /**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function(candidates, target) {
+  const res = []
+  const track = []
+  backTrack(0)
+  return res
+
+  function backTrack(start) {
+    const sum = track.reduce((sum, cur) => sum + cur, 0)
+    if (sum === target) return res.push([...track])
+    if (sum > target) return
+
+    for (let i = start; i < candidates.length; i++) {
+      track.push(candidates[i])
+      backTrack(i)
+      track.pop()
+    }
+  }
+};
+</script>

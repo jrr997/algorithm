@@ -1,0 +1,36 @@
+<script src="../common.js"></script>
+<script>
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var minDepth = function(root) {
+  if (!root) return 0
+  let queue = [root]
+  let step = 1
+  while (queue.length > 0) {
+    let len = queue.length
+    for (let i = 0; i < len; i++) { // 处理同层节点
+      let cur = queue.shift()
+      if (!cur.left && !cur.right) return step
+      if (cur.left) queue.push(cur.left)
+      if (cur.right) queue.push(cur.right)
+    }
+    step++
+  }
+
+};
+
+const root = createTree([3,9,20,null,null,15,7])
+console.log(root);
+let res = minDepth(root)
+console.log(res);
+</script>

@@ -1,0 +1,26 @@
+<script>
+  /**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function(n, k) {
+  const res = []
+  const track = []
+  backTrack(1, 0)
+  return res
+
+  function backTrack(start, floor) {
+    if (floor === k) return res.push([...track])
+    for (let i = start; i <= n; i++) {
+      track.push(i)
+      backTrack(i + 1, floor + 1)
+      track.pop()
+    }
+  }
+};
+
+let n = 4, k = 2
+let res = combine(n, k)
+console.log(res);
+</script>

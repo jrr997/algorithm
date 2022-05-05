@@ -1,0 +1,23 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsetsWithDup = function(nums) {
+  let _nums = [...nums].sort((a, b) => a -b)
+  const res = []
+  const track = []
+  backTrack(0)
+  return res
+
+  function backTrack(start) {
+    res.push([...track])
+    for (let i = start; i < _nums.length; i++) {
+      if (start !== i && _nums[i] === _nums[i - 1]) continue
+      track.push(_nums[i])
+      backTrack(i + 1)
+      track.pop()
+    }
+  } 
+};
+</script>
