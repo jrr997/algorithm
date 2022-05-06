@@ -1,0 +1,50 @@
+<script>
+  /**
+ * @param {number[][]} grid1
+ * @param {number[][]} grid2
+ * @return {number}
+ */
+var countSubIslands = function(grid1, grid2) {
+  let res = 0
+  const m = grid2.length, n = grid2[0].length
+
+  //  淹了那些一定不是子岛的岛屿
+  for (let i = 0; i < m; i++) {
+    for(let j = 0; j < n; j++) {
+      if (grid2[i][j] == 1 && grid1[i][j] == 0) {
+        dfs(i, j, grid2)
+      }
+    }
+  }
+
+  for (let i = 0; i < m; i++) {
+    for(let j = 0; j < n; j++) {
+      if (grid2[i][j] == 1) {
+        res++
+        dfs(i, j, grid2) // 递归淹没自己及相邻的岛屿
+      }
+    }
+  }
+
+  return res
+};
+
+var dfs = function(i, j, grid) {
+  const m = grid.length, n = grid[0].length
+  if (i < 0 || j < 0 || i === m || j === n) return
+
+  if (grid[i][j] == 0) return
+
+  grid[i][j] = 0
+
+  // 淹没相邻的岛屿
+  dfs(i + 1, j, grid)
+  dfs(i - 1, j, grid)
+  dfs(i, j + 1, grid)
+  dfs(i, j - 1, grid)
+}
+
+let grid1 = [[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]], grid2 = [[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]
+const res = countSubIslands(grid1, grid2)
+console.log(res);
+</script>

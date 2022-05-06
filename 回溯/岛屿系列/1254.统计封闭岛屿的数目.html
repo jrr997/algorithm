@@ -1,0 +1,50 @@
+<script>
+ /**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var closedIsland = function(grid) {
+  let res = 0
+  const m = grid.length, n = grid[0].length
+  // 淹了左右靠边的岛屿
+  for (let i = 0; i < m; i++) {
+    dfs(i, 0, grid)
+    dfs(i, n - 1, grid)
+  }
+  // 淹了上下靠边的岛屿
+  for (let i = 0; i < n; i++) {
+    dfs(0, i, grid)
+    dfs(m - 1, i, grid)
+  }
+
+  for (let i = 1; i < m - 1; i++) {
+    for (let j = 1; j < n - 1; j++) {
+      if (grid[i][j] === 0) {
+        res++
+        dfs(i, j ,grid)
+      }
+    }
+  }
+
+  return res
+};
+
+var dfs = function(i, j, grid) {
+  const m = grid.length, n = grid[0].length
+  if (i < 0 || j < 0 || i === m || j === n) return
+
+  if (grid[i][j] === 1) return
+
+  grid[i][j] = 1
+
+  dfs(i + 1, j, grid)
+  dfs(i - 1, j, grid)
+  dfs(i, j + 1, grid)
+  dfs(i, j - 1, grid)
+}
+
+
+let grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]
+const res = closedIsland(grid)
+console.log(res);
+</script>
