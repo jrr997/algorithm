@@ -1,0 +1,29 @@
+<script>
+  /**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+  const res = []
+  const track = new Array(2 * n).fill('')
+  backTrack(0, n, n)
+  return res
+
+  function backTrack(i, left, right) {
+  if (i === track.length) return res.push(track.join(''))
+
+  if (left > 0) {
+    track[i] = '('
+    backTrack(i + 1, left - 1, right)
+    track[i] = '' // 恢复
+  }
+  
+  if (right > 0 && left < right) {
+      track[i] = ')'
+      backTrack(i + 1, left, right - 1)
+      track[i] = '' // 恢复
+  }
+
+}
+};
+</script>
