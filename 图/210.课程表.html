@@ -1,0 +1,51 @@
+<script>
+  /**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {number[]}
+ */
+
+ // 拓扑排序DFS版: DFS后序遍历的结果就是拓扑排序
+ // 假设要先做0再做1，即1依赖0，如果图是 0 -> 1,结果不需要翻转(这个算法就是例子)
+ // 如果图是1 -> 0，需要翻转后序遍历的结果
+var findOrder = function(numCourses, prerequisites) {
+  const graph = buildGraph(numCourses, prerequisites)
+  const path = new Array(numCourses).fill(false)
+  const visited = new Set()
+  const res = []
+  let hasCycle = false
+
+  for (let i = 0; i < numCourses; i++) {
+    if (hasCycle) return []
+    traverse(i)
+  }
+  return res
+
+  // DFS
+  function traverse(s) {
+    if (path[s]) return hasCycle = true // 存在环
+
+    if (visited.has(s)) return
+    visited.add(s)
+
+    path[s] = true
+
+    for (let i = 0; i < graph[s].length; i++) {
+      traverse(graph[s][i])
+    }
+    res.push(s)
+    path[s] = false
+  }
+};
+
+// 创建邻接矩阵
+function buildGraph(numCourses, prerequisites) {
+  let graph = new Array(numCourses).fill(0).map(() => [])
+  for (let edge of prerequisites) {
+    const from = edge[1] 
+    const to = edge[0]
+    graph[to].push(from)
+  }
+  return graph
+}
+</script>

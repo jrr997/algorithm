@@ -1,0 +1,99 @@
+<script>
+  /**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+
+// ============================ DFS ============================ 
+// var canFinish = function(numCourses, prerequisites) {
+//   const graph = buildGraph(numCourses, prerequisites)
+//   const path = new Array(numCourses).fill(false)
+//   const visited = new Set()
+//   let hasCycle = false
+
+//   for (let i = 0; i < numCourses; i++) {
+//     if (hasCycle) return false
+//     traverse(i)
+//   }
+//   return true
+
+//   // DFS
+//   function traverse(s) {
+//     if (path[s]) return hasCycle = true // 存在环
+
+//     if (visited.has(s)) return
+//     visited.add(s)
+
+//     path[s] = true
+
+//     for (let i = 0; i < graph[s].length; i++) {
+//       traverse(graph[s][i])
+//     }
+
+//     path[s] = false
+//   }
+// };
+
+// // 创建邻接矩阵
+// function buildGraph(numCourses, prerequisites) {
+//   let graph = new Array(numCourses).fill(0).map(() => [])
+//   for (let edge of prerequisites) {
+//     const from = edge[1] 
+//     const to = edge[0]
+//     graph[from].push(to)
+//   }
+//   return graph
+// }
+
+
+// ============================ BFS ============================ 
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+var canFinish = function(numCourses, prerequisites) {
+  const [graph, indegree] = buildGraph(numCourses, prerequisites)
+  const visited = new Set()
+  let count = 0
+  // 初始化队列，入度为0的顶点入队
+  const q = []
+  for(let i in indegree) {
+    if (indegree[i] === 0) q.push(i)
+  }
+
+  while(q.length > 0) {
+    // debugger
+    const cur = q.shift()
+    if (visited.has(cur)) continue
+    visited.add(cur)
+    count++
+    const edges = graph[cur]
+    for (let edge of edges) {
+      indegree[edge] -= 1
+      if (indegree[edge] === 0) q.push(edge)
+    }
+  }
+  console.log(count);
+  return count === numCourses
+};
+
+// 创建邻接矩阵、统计入度
+function buildGraph(numCourses, prerequisites) {
+  const graph = new Array(numCourses).fill(0).map(() => [])
+  const indegree = new Array(numCourses).fill(0)
+  for (let edge of prerequisites) {
+    const from = edge[1] 
+    const to = edge[0]
+    graph[to].push(from)
+    // 统计入度
+    indegree[from] += 1
+  }
+  return [graph, indegree]
+}
+
+const numCourses = 2, prerequisites = [[1,0]]
+let res = canFinish(numCourses, prerequisites)
+console.log(res);
+</script>

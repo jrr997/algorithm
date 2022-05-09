@@ -1,0 +1,29 @@
+<script>
+  /**
+ * @param {number[][]} graph
+ * @return {number[][]}
+ */
+var allPathsSourceTarget = function(graph) {
+  const res = []
+  const path = []
+  traverse(0)
+  return res
+
+  function traverse(s) {
+    path.push(s)
+    
+    if (s === graph.length - 1) { // 已经到最后一个节点
+      res.push([...path])
+    }
+    for (let i = 0; i < graph[s].length; i++) {
+      traverse(graph[s][i])
+    }
+
+    path.pop()
+  }
+};
+
+const graph = [[4,3,1],[3,2,4],[3],[4],[]]
+const res = allPathsSourceTarget(graph)
+console.log(res);
+</script>
