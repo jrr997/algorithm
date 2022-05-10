@@ -1,0 +1,67 @@
+<script>
+  /**
+ * @param {number[][]} heights
+ * @return {number}
+ */
+var minimumEffortPath = function(heights) {
+  const m = heights.length, n = heights[0].length
+  // 定义：从 (0, 0) 到 (i, j) 的最小体力消耗是 effortTo[i][j]
+  const effortTo = new Array(m).fill(0).map(() => new Array(n).fill(Number.MAX_SAFE_INTEGER))
+  // base case，起点到起点的最小消耗就是 0
+  effortTo[0][0] = 0;
+
+  const q = [new State(0, 0, 0)] // 起点入队
+
+  while(q.length) {
+    const cur = q.shift()
+
+    // if (cur.x == m - 1 && cur.y == n - 1) {
+    //   console.log(effortTo);
+    //   return cur.effortFromStart
+    // }
+
+    if (cur.effortFromStart > effortTo[cur.x][cur.y]) continue
+
+    // 更新相邻顶点到起点的距离
+    const adjs = getAdjs(cur.x, cur.y, heights)
+    // debugger
+    for (let adj of adjs) {
+      const [x, y] = adj
+      // 计算从 (curX, curY) 达到 (nextX, nextY) 的消耗
+      const effort = Math.max(
+        Math.abs(heights[x][y] - heights[cur.x][cur.y]),
+        effortTo[cur.x][cur.y]
+      )
+
+      if (effortTo[x][y] > effort) {
+        // debugger
+        effortTo[x][y] = effort
+        q.push(new State(x, y, effort))
+      }
+    }
+  }
+      return effortTo[m-1][n - 1]
+  
+};
+
+function State(x, y, effortFromStart) {
+  this.x = x
+  this.y = y
+  this.effortFromStart = effortFromStart
+}
+
+function getAdjs(x, y, matrix) {
+  const adjs = []
+  if (x > 0) adjs.push([x - 1, y]) // 上
+  if (x < matrix.length - 1) adjs.push([x + 1, y]) // 下
+  if (y > 0) adjs.push([x, y - 1]) // 左
+  if (y < matrix[x].length - 1) adjs.push([x, y + 1]) // 右
+
+  return adjs
+}
+
+  // const heights = [[1,2,2],[3,8,2],[5,3,5]]
+  const heights = [[1,2,3],[3,8,4],[5,3,5]]
+  const res = minimumEffortPath(heights)
+  console.log(res);
+</script>

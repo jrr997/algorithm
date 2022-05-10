@@ -1,0 +1,40 @@
+<script>
+  /**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @param {number[]} succProb
+ * @param {number} start
+ * @param {number} end
+ * @return {number}
+ */
+var maxProbability = function(n, edges, succProb, start, end) {
+  // 构建邻接表(双向加权图)
+  const graph = new Array(n).fill(0).map(() => [])
+  edges.forEach((edge, i) => {
+    const [v1, v2] = edge
+    graph[v1].push({ to: v2, prob: succProb[i]})
+    graph[v2].push({ to: v1, prob: succProb[i]})
+  })
+
+  const probs = new Array(n).fill(0) // start到任意顶点的最大概率
+  probs[start] = 1 // base case: 起点到起点的概率为1
+  const q = [] // TODO: 换成优先级队列
+  q.push([start, 1]) 
+  while(q.length) {
+    const [cur, curProb] = q.shift()
+
+    if (probs[cur] > curProb) continue // 如果概率没有变大，不用更新相邻顶点
+
+    for (let adj of graph[cur]) {
+      const next = adj.to
+      const probToNext = curProb * adj.prob
+      if (probToNext > probs[next]) {
+        probs[next] = probToNext
+        q.push([next, probToNext])
+      }
+    }
+  }
+
+  return probs[end]
+};
+</script>

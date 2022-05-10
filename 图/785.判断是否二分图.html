@@ -1,0 +1,78 @@
+<script>
+  // ======================== DFS ========================
+
+  /**
+ * @param {number[][]} graph
+ * @return {boolean}
+ */
+var isBipartite = function(graph) {
+  const visited = new Set()
+  const color = new Array(graph.length).fill(0) // 用0和1分别代表两种颜色
+
+  let res = true // 是否二分图
+  for (let i in graph) {
+    traverse(i)
+  }
+  return res
+
+  function traverse(v) {
+    if (!res) return // 如果已经判定不是二分图，就不用继续遍历
+    visited.add(v)
+
+    for (let edge of graph[v]) {
+      // 相邻节点没有被访问过，给相邻节点染上与v不同的颜色，遍历相邻节点
+      if (!visited.has(edge)) {
+        color[edge] = color[v] ? 0 : 1
+        traverse(edge)
+      } else {
+        // 如果相邻顶点与自己同色，说明不是二分图
+        if (color[v] === color[edge]) res = false
+      }
+    }
+  }
+};
+
+
+
+  // ======================== BFS ========================
+/**
+ * @param {number[][]} graph
+ * @return {boolean}
+ */
+var isBipartite = function(graph) {
+  const visited = new Set()
+  const color = new Array(graph.length).fill(0) // 用0和1分别代表两种颜色
+  let res = true
+  for (let i in graph) {
+    if (!visited.has(i)) bfs(i)
+  }
+  return res
+
+  function bfs(v) {
+  const q = [v]
+  visited.add(v)
+  while(q.length && res) {
+    const cur = q.shift()
+    
+    for (let edge of graph[cur]) {
+      // 相邻节点没有被访问过，给相邻节点染上与v不同的颜色，遍历相邻节点
+      if (!visited.has(edge)) {
+        color[edge] = color[cur] ? 0 : 1
+        q.push(edge)
+        visited.add(cur)
+      } else {
+        // 如果相邻顶点与自己同色，说明不是二分图
+        if (color[cur] === color[edge]) res = false
+      }
+    }
+
+  }
+  }
+
+
+  return true
+
+
+};
+
+</script>
