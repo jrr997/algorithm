@@ -1,0 +1,70 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+
+// ================== 回溯 ==================
+// var findTargetSumWays = function(nums, target) {
+//   let res = 0
+//   backTrack(0, 0)
+//   return res
+
+//   function backTrack(i, curSum) {
+//     if (i === nums.length) { // 索引越界，计算结果
+//       if (curSum === target) res++
+//       return
+//     }
+
+//     // 符号为 +
+//     backTrack(i + 1, curSum += nums[i])
+//     curSum -= nums[i] // 撤销
+
+//     // 符号为 -
+//     backTrack(i + 1, curSum -= nums[i])
+//     curSum += nums[i]
+//   }
+// };
+
+
+
+// ================== DP ==================
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var findTargetSumWays = function(nums, target) {
+  const sum = nums.reduce((pre, cur) => pre + cur, 0)
+  if (sum < Math.abs(target) || (sum + target) % 2 === 1) return 0
+  return subsets(nums, (sum + target) / 2)
+};
+
+function subsets(nums, sum) {
+  const m = nums.length + 1, n = sum + 1
+  console.log(m, n);
+  const dp = new Array(m).fill(0).map(() => new Array(n).fill(0))
+  dp[0][0] = 1 // base case: sum为0且背包为空时，什么都不做就是一种方法
+
+  for (let i = 1; i < m; i++) {
+    for (let j = 0; j <= sum; j++) {
+      if (j >= nums[i - 1]) {
+        dp[i][j] = dp[i - 1][j - nums[i - 1]] + dp[i - 1][j]
+      } else { // 空间不足，只能不装
+        dp[i][j] = dp[i - 1][j] 
+      }
+    }
+  }
+  return dp[nums.length][sum]
+}
+
+
+
+
+const nums = [1,1,1,1, 1], target = 3
+// const nums = [1,1,1,1,1], target = 3
+const res = findTargetSumWays(nums, target)
+console.log(res);
+
+</script>
