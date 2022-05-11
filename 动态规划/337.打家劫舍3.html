@@ -1,0 +1,36 @@
+<script src="../common.js"></script>
+<script>
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var rob = function(root) {
+  const map = new Map()
+  return dp(root)
+
+  function dp(node) {
+    if (!node) return 0
+    if(map.has(node)) return map.get(node)
+    const notRob = dp(node.left) + dp(node.right) // 不抢node
+    const robIt = node.val +
+      (node.left ? (dp(node.left.left) + dp(node.left.right)) : 0) +
+      (node.right ? (dp(node.right.left) + dp(node.right.right)) : 0);
+
+    const res =  Math.max(notRob, robIt)
+    map.set(node, res)
+    return res
+  }
+};
+
+let root = createTree([3,2,3,null,3,null,1])
+let res = rob(root)
+console.log(res);
+</script>

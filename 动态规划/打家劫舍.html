@@ -18,6 +18,27 @@
     return res[2];
   };
 
+
+  // 空间优化
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var rob = function(nums) {
+  let res = nums[0]
+  let pre = nums[0], prePre = 0
+  for (let i = 2; i <= nums.length; i++) {
+    const cur = Math.max(
+      nums[i - 1] + prePre, // 偷第i - 1个房间,
+      pre // 不偷
+    )
+    res = Math.max(cur, res)
+    prePre = pre
+    pre = cur
+  }
+  return res
+};
+
   let arr = [1, 1, 1, 2,5];
   console.log(rob(arr));
 </script>

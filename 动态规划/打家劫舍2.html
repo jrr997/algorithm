@@ -3,26 +3,60 @@
  * @param {number[]} nums
  * @return {number}
  */
+// var rob = function(nums) {
+//     const len = nums.length
+//     if (len < 3) return Math.max(...nums)
+//     return Math.max(robRange(nums, 0, len - 2), robRange(nums, 1, len - 1))
+// };
+
+// var robRange = function (nums, start, end) {
+//     let arr = nums.slice(start, end + 1)
+//     const len = arr.length;
+//     if (len < 3) return Math.max(...arr);
+//     let res = [];
+//     res[0] = arr[0];
+//     res[1] = Math.max(arr[1], arr[0]);
+//     for (let i = 2; i < arr.length; i++) {
+//       res[2] = Math.max(res[1], res[0] + arr[i]);
+//       res[0] = res[1]
+//       res[1] = res[2]
+//     }
+//     return res[2];
+  // };
+
+
+// 自顶而下
+
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
 var rob = function(nums) {
-    const len = nums.length
-    if (len < 3) return Math.max(...nums)
-    return Math.max(robRange(nums, 0, len - 2), robRange(nums, 1, len - 1))
+  let len = nums.length
+  if (len === 1) return nums[0]
+  return Math.max(
+    robRange(nums, 0, len - 2),
+    robRange(nums, 1, len - 1)
+  )
 };
 
-var robRange = function (nums, start, end) {
-    let arr = nums.slice(start, end + 1)
-    const len = arr.length;
-    if (len < 3) return Math.max(...arr);
-    let res = [];
-    res[0] = arr[0];
-    res[1] = Math.max(arr[1], arr[0]);
-    for (let i = 2; i < arr.length; i++) {
-      res[2] = Math.max(res[1], res[0] + arr[i]);
-      res[0] = res[1]
-      res[1] = res[2]
-    }
-    return res[2];
-  };
+var robRange = function(nums, start, end) {
+  const map = new Map()
+  return dp(start)
 
-console.log(rob([200,3,140,20,10]));
+  function dp(start) {
+  if (start > end) return 0
+  if (map.has(start)) return map.get(start) 
+  const cur = Math.max(
+    nums[start] + dp(start + 2),
+    dp(start + 1)
+  )
+  map.set(start, cur)
+  return cur
+
+}
+
+}
+const arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+console.log(rob(arr));
 </script>
