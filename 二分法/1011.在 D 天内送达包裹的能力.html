@@ -1,0 +1,39 @@
+<script>
+  /**
+ * @param {number[]} weights
+ * @param {number} days
+ * @return {number}
+ */
+var shipWithinDays = function(weights, days) {
+  let left = 1, right = weights.reduce((pre, cur) => pre + cur, 0)
+
+  while(left <= right) {
+    const mid = Math.floor(left + (right - left) / 2)
+    if (canLoadAll(weights, days, mid)) {
+      right = mid - 1
+    } else {
+      left = mid + 1
+    }
+  }
+
+  return left
+};
+
+function canLoadAll(weights, days, maxWeight) {
+  
+  let i = 0
+  while(days > 0 && i < weights.length) {
+    let weightInToday = maxWeight
+    while(i < weights.length && weightInToday >= weights[i]) {
+      weightInToday -= weights[i]
+      i++ 
+    }
+    days--
+  }
+  return days > 0 || i === weights.length
+}
+
+let weights = [3,2,2,4,1,4], days = 3
+let res = shipWithinDays(weights, days)
+console.log(res);
+</script>

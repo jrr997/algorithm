@@ -1,0 +1,18 @@
+<script>
+  /**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+var eraseOverlapIntervals = function(intervals) {
+  let arr = intervals.sort((a, b) => a[1] - b[1])
+  let res = 1
+  let end_i = 0
+  for (let j = 1; j < arr.length; j++) {
+    if (arr[j][0] >= arr[end_i][1]) { // 没有相交
+      res++
+      end_i = j
+    }
+  }
+  return intervals.length - res
+};
+</script>

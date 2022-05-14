@@ -1,0 +1,60 @@
+<script>
+  /**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  let dp = new Array(prices.length).fill(0).map(() => [0 ,0])
+  // dp[i][0]表示第i天没有股票，此时的最大利润
+  // dp[i][1]表示第i天有股票，此时的最大利润
+
+  // base case:
+  // dp[0][0] 第一天不买股票利润为0
+  // dp[0][1] 第一天买股票，利润为-(买股票的钱)
+
+  dp[0][0] = 0
+  dp[0][1] = -prices[0]
+  for (let i = 1; i < prices.length; i++) {
+    // 1.第i天没股票
+    // (1).有可能是前一天也没股票，此时最大利润为与前一天(无股票)相同
+    // (2).有可能是今天卖了股票，此时最大利润为前一天(有股票)的最大利润 + 今天价格
+    dp[i][0] = Math.max(
+      dp[i - 1][0],
+      dp[i - 1][1] + prices[i]
+    )
+
+    // 2.第i天有股票
+    // (1). 前一天也有股票，此时最大利润和前一天相同
+    // (2). 前一天没股票，今天买入股票，此时最大利润等于前一天利润 - 今天利润
+    dp[i][1] = Math.max(
+      dp[i - 1][1],
+      dp[i - 1][0] - prices[i]
+    )
+
+  }
+  return dp[prices.length - 1][0]
+};
+
+
+// 空间压缩版本
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  let dp_0 = 0, dp_1 = -prices[0]
+  for (let i = 1; i < prices.length; i++) {
+    dp_0 = Math.max(
+      dp_0,
+      dp_1 + prices[i]
+    )
+
+    dp_1 = Math.max(
+      dp_1,
+      dp_0 - prices[i]
+    )
+
+  }
+  return dp_0
+};
+</script>

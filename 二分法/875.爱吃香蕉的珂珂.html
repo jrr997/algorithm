@@ -1,0 +1,29 @@
+<script>
+  var minEatingSpeed = function(piles, h) {
+  const sum = piles.reduce((pre, cur) => pre + cur, 0)
+  let start = Math.ceil(sum / h), end = 1000
+  
+  while(start !== end) {
+    debugger
+    const mid = start + Math.floor((end - start) / 2)
+    if (canEatAll(piles, mid, h)) {
+      end = mid
+    } else {
+      start = mid
+    }
+  }
+  return start
+};
+
+function canEatAll(piles, i, h) {
+  let res = 0
+  for(let bananas of piles) {
+    res += Math.ceil(bananas / i)
+  }
+  return res <= h
+}
+
+const piles = [30,11,23,4,20], h = 5
+const res = minEatingSpeed(piles, h)
+console.log(res);
+</script>
