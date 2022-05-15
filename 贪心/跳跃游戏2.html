@@ -1,0 +1,24 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var jump = function(nums) {
+  let dp = new Array(nums.length).fill(99999)
+  dp[0] = 0
+  dp[1] = 1
+  for(let i = 2; i < nums.length; i++) {
+    for(j = i - 1; j >= 0; j--) {
+      // debugger
+      let lastStep = nums[j] + j >= i ? 99999 : dp[j] + 1
+      dp[i] = Math.min(dp[i], lastStep)
+    }
+  }
+  console.log(dp)
+  return dp[nums.length - 1]
+};
+
+const nums = [2,3,1,1,4]
+const res = jump(nums)
+console.log(res);
+</script>

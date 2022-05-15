@@ -1,0 +1,20 @@
+<script>
+  /**
+ * @param {number[][]} points
+ * @return {number}
+ */
+var findMinArrowShots = function(points) {
+   const arr = points.sort((a, b) => a[1] - b[1])
+
+   let res = 1
+   let end_i = 0
+   for (let i = 1; i < arr.length; i++) {
+     if (arr[i][0] > arr[end_i][1]) {
+       // 不相交,arr[i]为下一个区间
+       end_i = i
+       res++
+     }
+   }
+   return res
+};
+</script>
