@@ -1,0 +1,45 @@
+<script>
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+var findAnagrams = function(s, p) {
+  const need = new Map()
+  for (const str of p) {
+    need.set(str, need.has(str) ? need.get(str) + 1 : 1)
+  }
+  const window = new Map()
+  let left = 0, right = 0
+  let valid = 0
+  const res = []
+
+  while(right < s.length) {
+    const str = s[right] // 即将进入窗口的字符串
+    right++
+    if (need.has(str)) {
+      window.set(str, window.has(str) ? window.get(str) + 1 : 1)
+      if (window.get(str) === need.get(str)) {
+        valid++
+      }
+    }
+
+    // 判断左窗口是否需要收缩
+    while(right - left >= p.length) {
+      if (valid === need.size) {
+        res.push(left)
+      }
+      let leftStr = s[left] // 即将出窗口的字符串
+      left++
+      if (need.has(leftStr)) {
+        if (window.get(leftStr) === need.get(leftStr)) {
+          valid--
+        }
+        window.set(leftStr, window.has(leftStr) ? window.get(leftStr) - 1: 1)
+      }
+    }
+  }
+
+  return res
+};
+</script>

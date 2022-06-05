@@ -1,0 +1,49 @@
+<script>
+  /**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+var isMatch = function(s, p) {
+  return dp(s, 0, p, 0)
+};
+
+function dp(s, i, p, j) {
+  // base case
+  if (j === p.length) {
+    return i === s.length
+  }
+  if (i === s.length) {
+    // 判断字符串p的剩余字符是否能匹配空字符串
+    // 如果能匹配空串，一定是字符和 * 成对儿出现
+    if ((p.length - j) % 2 === 1) return false
+    // 检查是否为 x*y*z* 这种形式
+    for (; j + 1 < p.length; j += 2) {
+      if (p[j + 1] != '*') {
+          return false;
+      }
+    }
+    return true
+  }
+
+  if (s[i] === p[j] || p[j] === '.') { // 匹配
+    if (j + 1 < p.length && p[j + 1] === '*') { // 有通配符
+      // 通配符匹配0次或多次
+      return dp(s, i, p, j + 2) || dp(s, i + 1, p, j)
+    } else { // 看下一个字符是否匹配
+      return dp(s, i + 1, p, j + 1) 
+    }
+  } else { // 不匹配
+    if (j + 1 < p.length && p[j + 1] === '*') { // 有通配符
+      // 通配符匹配0次
+      return dp(s, i, p, j + 2)
+    } else { // 无通配符时一定匹配失败
+      return false
+    }
+  }
+}
+
+const s = "a", p = ".*..a*"
+const res = isMatch(s, p)
+console.log(res);
+</script>
