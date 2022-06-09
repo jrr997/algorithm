@@ -1,0 +1,65 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findKthLargest = function(nums, k) {
+  let len = nums.length
+  // 洗牌
+  shuffle(nums)
+  let lo = 0, hi = nums.length - 1
+  // debugger
+  let p = partition(nums, lo, hi)
+  while( p !== len - k) {
+    if (p < len - k) { // 目标在p的右边
+      p = partition(nums, p + 1, hi)
+    } else if (p > len - k) {
+      p = partition(nums, lo, p - 1)
+    }
+  }
+  return nums[p]
+};
+  function partition(nums, lo, hi) {
+    let pivot = nums[lo]
+    // 关于区间的边界控制需格外小心，稍有不慎就会出错
+    // 我这里把 i, j 定义为开区间，同时定义：
+    // [lo, i) <= pivot；(j, hi] > pivot
+    // 之后都要正确维护这个边界区间的定义
+    let i = lo + 1, j = hi
+
+    while(i <= j ) {
+      while (i < hi && nums[i] <= pivot) {
+        i++
+      }
+      while (j > lo && nums[j] > pivot) {
+        j--;
+        // 此 while 结束时恰好 nums[j] <= pivot
+      }
+      if (i >= j) {
+        break;
+      }
+      swap(nums, i, j);
+    }
+    // 将 pivot 放到合适的位置，即 pivot 左边元素较小，右边元素较大
+    swap(nums, lo, j);
+    return j;
+  }
+
+  function swap(nums, i, j) {
+    let temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+  }
+  function shuffle(nums) {
+    let len = nums.length
+    for (let i = 0; i < len; i++) {
+      let random = Math.floor(Math.random() * (len - i)) + i;
+      [nums[i], nums[random]] = [nums[random], nums[i]]
+    }
+  }
+
+  let nums = [3,2,1,5,6,4] ,k = 2
+  const res = findKthLargest(nums, k)
+  console.log(res);
+</script>

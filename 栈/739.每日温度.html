@@ -1,0 +1,19 @@
+<script>
+  /**
+ * @param {number[]} temperatures
+ * @return {number[]}
+ */
+// 单调栈
+var dailyTemperatures = function(temperatures) {
+  let res = new Array(temperatures.length)
+  let s = []
+  for (let i = temperatures.length - 1; i >= 0; i--) {
+    while(s.length > 0 && temperatures[s[s.length - 1]] <= temperatures[i]) {
+      s.pop()
+    }
+    res[i] = s.length === 0 ? 0 : s[s.length - 1] - i
+    s.push(i)
+  }
+  return res
+};
+</script>

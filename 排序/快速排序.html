@@ -1,0 +1,62 @@
+<script>
+  function quickSort(nums) {
+    // 随机打乱数组，以免发生极端情况
+    shuffle(nums)
+
+    sort(nums, 0, nums.length - 1)
+  }
+
+  function sort(nums, lo, hi) {
+    if (lo >= hi) return
+
+    // 对 nums[lo..hi] 进行切分
+    // 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
+    let p = partition(nums, lo, hi)
+
+    sort(nums, lo, p - 1)
+    sort(nums, p + 1, hi)
+  }
+
+  function partition(nums, lo, hi) {
+    let pivot = nums[lo]
+    // 关于区间的边界控制需格外小心，稍有不慎就会出错
+    // 我这里把 i, j 定义为开区间，同时定义：
+    // [lo, i) <= pivot；(j, hi] > pivot
+    // 之后都要正确维护这个边界区间的定义
+    let i = lo + 1, j = hi
+
+    while(i <= j ) {
+      while (i < hi && nums[i] <= pivot) {
+        i++
+      }
+      while (j > lo && nums[j] > pivot) {
+        j--;
+        // 此 while 结束时恰好 nums[j] <= pivot
+      }
+      if (i >= j) {
+        break;
+      }
+      swap(nums, i, j);
+    }
+    // 将 pivot 放到合适的位置，即 pivot 左边元素较小，右边元素较大
+    swap(nums, lo, j);
+    return j;
+  }
+
+  function swap(nums, i, j) {
+    let temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+  }
+
+  function shuffle(nums) {
+    const len = nums.length
+    for(let i = 0; i < len; i++) {
+      let random = Math.floor(Math.random() * (len - i)) + i;
+      [nums[i], nums[random]] = [nums[random], nums[i]];
+    }
+  }
+  let arr = [5,7,4,6,1]
+  quickSort(arr)
+  console.log(arr);
+</script>
