@@ -1,0 +1,43 @@
+<script>
+  /**
+ * @param {number[]} nums
+ * @param {number} m
+ * @return {number}
+ */
+var splitArray = function(nums, m) {
+  let left = 1, right = 20
+  
+  while(left <= right) {
+    let mid = left + Math.floor((right - left) / 2)
+    // if (mid === 14) debugger
+    if (canSplit(nums, m, mid)) {
+      right = mid - 1
+    } else {
+      left = mid + 1
+    }
+  }
+  return left
+};
+
+var canSplit = function(nums, m, mid) {
+  let count = 1
+  let i = 0, rest = mid
+  while(i < nums.length) {
+    if (mid < nums[i]) return false
+
+    if (rest >= nums[i]) {
+      rest -= nums[i]
+      i++
+    } else {
+      count++
+      if (count > m) return false
+      rest = mid
+    }
+  }
+  return count <= m
+}
+
+let nums = [7,2,5,10,8], m = 2
+let res = splitArray(nums, m)
+console.log(res);
+</script>

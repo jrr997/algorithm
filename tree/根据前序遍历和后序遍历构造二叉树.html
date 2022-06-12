@@ -1,0 +1,52 @@
+<script>
+  /**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} preorder
+ * @param {number[]} postorder
+ * @return {TreeNode}
+ */
+
+function TreeNode(val, left, right) {
+    this.val = (val===undefined ? 0 : val)
+    this.left = (left===undefined ? null : left)
+    this.right = (right===undefined ? null : right)
+}
+var constructFromPrePost = function(preorder, postorder) {
+  if (preorder.length === 0) return null
+
+  const root = new TreeNode(preorder[0])
+  // const preIndex = preorder.indexOf(postorder[postorder.length - 2])
+  const postIndex = postorder.indexOf(preorder[1])  // 左子树的根节点 在后序数组的位置，且左子树根节点一定是左子树最后一个节点
+  root.left = constructFromPrePost(preorder.slice(1, postIndex + 2), postorder.slice(0, postIndex + 1))
+  root.right = constructFromPrePost(preorder.slice(postIndex + 2), postorder.slice(postIndex + 1, postorder.length - 1))
+  return root
+};
+
+
+// var constructFromPrePost = function(pre, post) {
+//     debugger
+//     if(pre.length == 0){
+//         return null;
+//     };
+
+//     let tmp = pre[0];
+//     let index = post.indexOf(pre[1]); // 左子树的根节点 在后序数组的位置
+//     let root = new TreeNode(tmp);
+//     root.left = constructFromPrePost(pre.slice(1,index+2),post.slice(0,index+1));
+//     root.right = constructFromPrePost(pre.slice(index+2),post.slice(index+1,post.length-1));
+//     return root;
+
+
+// };
+
+preorder = [1,2,4,5,3,6,7], postorder = [4,5,2,6,7,3,1]
+let res = constructFromPrePost(preorder, postorder)
+console.log(res);
+</script>

@@ -1,0 +1,43 @@
+<script>
+  /**
+ * @param {number} n
+ * @param {number} k
+ * @return {number}
+ */
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number}
+ */
+var findKthNumber = function(n, k) {
+  // 查询某个前缀下满足条件的数字和
+  var getCount = (prefix, n) => {
+    let cur = prefix, next = cur + 1
+    let count = 0
+    while(cur <= n) {
+      if (next <= n) {
+        count += next - cur
+      } else { // n在cur和next之间
+        count += n - cur + 1
+      }
+      cur *= 10
+      next *= 10
+    }
+    return count
+  }
+
+  // Main
+  let prefix = 1, p = 1
+  while(p < k) {
+    let count =  getCount(prefix, n)
+    if (count + p > k) {
+      prefix *= 10
+      p++
+    } else if(p + count <= k) {
+      prefix ++;
+      p += count;
+    }
+  }
+  return prefix
+};
+</script>
